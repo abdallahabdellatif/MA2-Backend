@@ -1,13 +1,8 @@
 const express = require('express')
 const router = express.Router()
-
-router.post('/signup', (req, res) => {
-  if (req.password.length < 8) {
-    res.json({ msg: 'Invalid Password', code: 0 })
-  } else {
-    res.json({ msg: 'Sign up successful', code: 1 })
-  }
-})
+const { addUser } = require('../Controllers/user.controller')
+const UserModel = require('../Models/user.model')
+router.post('/signup', addUser)
 
 router.post('/signup', (req, res) => {})
 router.get('/signin', (req, res) => {
