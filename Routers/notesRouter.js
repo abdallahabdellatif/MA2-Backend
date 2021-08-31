@@ -1,12 +1,21 @@
 const express = require('express')
+const {
+  getMyNotes,
+  addNote,
+  updateNote,
+  deleteNote,
+} = require('../Controllers/note.controller')
+const {
+  validateAddNote,
+  validateUpdateNote,
+  validateDeleteNote,
+} = require('../Validation/notesValidation')
 const router = express.Router()
 
-router.get('/addnewnote', (req, res) => {
-  res.send('add your note')
-})
+router.get('/getmynotes', getMyNotes)
 
-router.post('/deletenote', (req, res) => {
-  res.send('note deleted')
-})
+router.post('/addnote', validateAddNote, addNote)
+router.post('/updatenote', validateUpdateNote, updateNote)
+router.post('/deletenote', validateDeleteNote, deleteNote)
 
 module.exports = router
