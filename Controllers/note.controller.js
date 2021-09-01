@@ -1,4 +1,5 @@
 const NoteModel = require('../Models/note.model')
+const UserModel = require('../Models/user.model')
 
 const getMyNotes = async (req, res) => {
   try {
@@ -15,7 +16,12 @@ const addNote = async (req, res) => {
   try {
     req.body.Note.lastEdited = new Date()
     // console.log(req.body)
-    await NoteModel.create(req.body.Note)
+    const newNote = await NoteModel.create(req.body.Note)
+    const userId = '1w34'
+    const user = await UserModel.findById(userId)
+    user.Notes.push(newNote.id)
+    await user.save()
+    // user.notes.pusj(newNote.id)
     return res.json({ msg: 'success', statusCode: 0 })
   } catch (err) {
     // console.log(err)
@@ -26,7 +32,7 @@ const addNote = async (req, res) => {
 const updateNote = async (req, res) => {
   try {
     // console.log(req.body)
-    const note = await NoteModel.findById(req.body.id)
+    const note = await NoteModel.findById(req.body.id) //id of the note
     // console.log(note)
     const edited =
       note.title !== req.body.title || note.content !== req.body.content
@@ -45,7 +51,11 @@ const updateNote = async (req, res) => {
 const deleteNote = async (req, res) => {
   try {
     // console.log(req.body)
-    await NoteModel.findByIdAndDelete(req.body.id)
+    const userId = 'd3r'
+    await NoteModel.findByIdAndDelete(req.body.id) //id of the note
+    const user = await UserModel.findById(userId)
+    user.Notes.filter((id) => id !== newNote.id)
+    await user.save()
     return res.json({ msg: 'success', statusCode: 0 })
   } catch (err) {
     // console.log(err)
