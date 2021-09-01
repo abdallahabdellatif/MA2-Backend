@@ -1,14 +1,22 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   phone: String,
   name: String,
   email: String,
   password: String,
-  lists: Array,
-  Notes: Array,
-})
+  lists: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "TodoList",
+  },
+  Notes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Notes",
+    },
+  ],
+});
 //userSchema.populate('TodoList')
-userSchema.set('toJSON', { virtuals: true })
-userSchema.set('toObject', { virtuals: true })
-module.exports = mongoose.model('users', userSchema)
+userSchema.set("toJSON", { virtuals: true });
+userSchema.set("toObject", { virtuals: true });
+module.exports = mongoose.model("users", userSchema);

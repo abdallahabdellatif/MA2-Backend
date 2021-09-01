@@ -1,17 +1,24 @@
-const express = require('express')
-const router = express.Router()
-const { addUser } = require('../Controllers/user.controller')
-const UserModel = require('../Models/user.model')
-router.post('/signup', addUser)
+const express = require("express");
+const joi = require("Joi");
+const router = express.Router();
+const {
+  addUser,
+  signIn,
+  getMyNotes,
+} = require("../Controllers/user.controller");
+const {
+  validateSignin,
+  validateSignup,
+} = require("../Validation/user.validator");
 
-router.post('/signup', (req, res) => {})
-router.get('/signin', (req, res) => {
-  res.sendStatus(401)
-  res.send('welcome to MA^2')
-})
+//router.post("/signup", addUser);
 
-router.post('/Home', (req, res) => {
-  res.send('Welcome to Homepage')
-})
+router.post("/getmynotes", getMyNotes);
 
-module.exports = router
+router.post("/signup", validateSignup, addUser);
+router.post("/signin", validateSignin, signIn);
+router.post("/Home", (req, res) => {
+  res.send("Welcome to Homepage");
+});
+
+module.exports = router;

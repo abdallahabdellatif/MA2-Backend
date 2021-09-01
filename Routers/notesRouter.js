@@ -1,21 +1,20 @@
-const express = require('express')
+const express = require("express");
 const {
-  getMyNotes,
   addNote,
   updateNote,
   deleteNote,
-} = require('../Controllers/note.controller')
+} = require("../Controllers/note.controller");
 const {
   validateAddNote,
   validateUpdateNote,
   validateDeleteNote,
-} = require('../Validation/notesValidation')
-const router = express.Router()
+} = require("../Validation/notesValidation");
+const router = express.Router();
 
-router.get('/getmynotes', getMyNotes)
+//router.get('/getmynotes', getMyNotes)
 
-router.post('/addnote', validateAddNote, addNote)
-router.post('/updatenote', validateUpdateNote, updateNote)
-router.post('/deletenote', validateDeleteNote, deleteNote)
+router.post("/addnote", validateAddNote, addNote);
+router.post("/updatenote", validateUpdateNote, updateNote);
+router.post("/deletenote", validateDeleteNote, deleteNote);
 
-module.exports = router
+module.exports = router;
