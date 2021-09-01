@@ -3,8 +3,7 @@ const Joi = require('joi')
 const validateAddTodolist = (req, res, next) => {
   const schema = Joi.object({
     Todolist: Joi.object({
-      title : Joi.string().required(),
-      todos : Joi.array(),
+      title : Joi.string().required()
     }).required(),
     
   })
@@ -21,7 +20,10 @@ const validateAddTodolist = (req, res, next) => {
 
 const validateUpdateTodolist = (req, res, next) => {
   const schema = Joi.object({
+    Todolist :Joi.object({
+    id : Joi.string().required(),
     title: Joi.string().required(),
+    })
   })
 
   const isValid = schema.validate(req.body)

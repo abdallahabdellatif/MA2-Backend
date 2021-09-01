@@ -11,17 +11,18 @@ const getMyTodolists = async (req, res) => {
 
   const addTodolist = async (req, res) => {
     try {
-      await TodolistModel.create(req.body.Todo)
+      await TodolistModel.create(req.body.Todolist)
       return res.json({ msg: 'success', statusCode: 0 })
     } catch (err) {
       return res.json({ err: 'server error', statusCode: 1 })
     }
   }
 
-  const updateTodolists = async (req, res) => {
+  const updateTodolist = async (req, res) => {
     try {
-      await TodolistModel.findByIdAndUpdate(req.body.id, {
-        title: req.body.title,
+      await TodolistModel.findByIdAndUpdate(req.body.Todolist.id, {
+        id : req.body.Todolist.id,
+        title: req.body.Todolist.title,
       })
       return res.json({ msg: 'success', statusCode: 0 })
     } catch (err) {
@@ -38,4 +39,4 @@ const getMyTodolists = async (req, res) => {
         }
       }
 
-      module.exports = { getMyTodolists, addTodolist, updateTodolists, deleteTodolist }
+      module.exports = { getMyTodolists, addTodolist, updateTodolist, deleteTodolist }

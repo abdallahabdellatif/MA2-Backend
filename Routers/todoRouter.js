@@ -1,6 +1,6 @@
 const express = require('express')
 const { getMyTodos, addTodo, updateTodo, deleteTodo } = require('../Controllers/todo.controller')
-const {validateAddTodo, validateUpdateTodo} = require('../Validation//todoValidation')
+const {validateAddTodo, validateUpdateTodo} = require('../Validation/todoValidation')
 const router = express.Router()
 
 router.post('/todos',  getMyTodos)
