@@ -1,15 +1,13 @@
 const Joi = require('joi')
 
-const validateAddTodo = (req, res, next) => {
+const validateAddTodolist = (req, res, next) => {
   const schema = Joi.object({
-    Todo: Joi.object({
-       // userid : Joi.string().require(),
-        content: Joi.string().required(),
-        
-
+    Todolist: Joi.object({
+      title : Joi.string().required(),
+      todos : Joi.array(),
     }).required(),
-    })
-    console.log("abdalahhh")
+    
+  })
 
   const isValid = schema.validate(req.body)
   if (isValid.error) {
@@ -21,13 +19,10 @@ const validateAddTodo = (req, res, next) => {
   return next()
 }
 
-const validateUpdateTodo = (req, res, next) => {
+const validateUpdateTodolist = (req, res, next) => {
   const schema = Joi.object({
-   Todo : Joi.object({
-       id : Joi.string().required(),
-      content : Joi.string().required(),
+    title: Joi.string().required(),
   })
-})
 
   const isValid = schema.validate(req.body)
   if (isValid.error) {
@@ -42,6 +37,6 @@ const validateUpdateTodo = (req, res, next) => {
 
 
 module.exports = {
-  validateAddTodo,
-  validateUpdateTodo,
+  validateAddTodolist,
+  validateUpdateTodolist,
 }

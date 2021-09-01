@@ -11,7 +11,7 @@ const getMyTodos = async (req, res) => {
 
   const addTodo = async (req, res) => {
     try {
-     const newTodo = await TodoModel.create(req.body.Todo)
+      await TodoModel.create(req.body.Todo)
       return res.json({ msg: 'success', statusCode: 0 })
     } catch (err) {
       return res.json({ err: 'server error', statusCode: 1 })
@@ -20,18 +20,20 @@ const getMyTodos = async (req, res) => {
 
   const updateTodo = async (req, res) => {
     try {
-      await NoteModel.findByIdAndUpdate(req.body.id, {
-        content: req.body.content,
+      console.log(req.body.Todo.id)
+      await TodoModel.findByIdAndUpdate(req.body.Todo.id, {
+        
+        content: req.body.Todo.content,
       })
       return res.json({ msg: 'success', statusCode: 0 })
     } catch (err) {
-      return res.json({ err: 'server error', statusCode: 1 })
+      return res.json({ err:'server error', statusCode: 1 })
     }
       }
 
       const deleteTodo = async (req, res) => {
         try {
-          await TodoModel.findByIdAndDelete(req.body.id)
+          await TodoModel.findByIdAndDelete(req.body.Todo.id)
           return res.json({ msg: 'success', statusCode: 0 })
         } catch (err) {
           return res.json({ err: 'server error', statusCode: 1 })

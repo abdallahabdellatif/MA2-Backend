@@ -1,20 +1,14 @@
 const express = require('express')
+const { getMyTodos, addTodo, updateTodo, deleteTodo } = require('../Controllers/todo.controller')
+const {validateAddTodo, validateUpdateTodo} = require('../Validation//todoValidation')
 const router = express.Router()
 
-router.post('/lists', (req, res) => {
-  res.send('list added successfully')
-})
+router.post('/todos',  getMyTodos)
 
-router.get('/addnewtask', (req, res) => {
-  res.send('add your task')
-})
+router.post('/addnewtask',validateAddTodo, addTodo)
 
-router.post('/deletelist', (req, res) => {
-  res.send('list deleted')
-})
+router.post('/deletetask',  deleteTodo)
 
-router.post('/deletetask', (req, res) => {
-  res.send('task deleted')
-})
+router.post('/updatetask', validateUpdateTodo, updateTodo)
 
 module.exports = router
