@@ -7,8 +7,15 @@ const validateSignup = (req, res, next) => {
       .object({
         name: joi.string().required(),
         phone: joi.string().required(),
-        email: joi.string().required(),
-        password: joi.string().required(),
+        email: joi.string().required().pattern(new RegExp("/S+@S+.S+/")),
+        password: joi
+          .string()
+          .required()
+          .pattern(
+            new RegExp(
+              "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$"
+            )
+          ),
       })
       .required(),
   });
