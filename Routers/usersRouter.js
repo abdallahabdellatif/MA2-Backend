@@ -1,6 +1,7 @@
 const express = require("express");
 const joi = require("Joi");
 const router = express.Router();
+const bcrypt =require("bcrypt");
 const {
   addUser,
   signIn,
