@@ -12,8 +12,8 @@ app.use(express.json())
 app.use('/users', usersRouter)
 app.use('/notes', notesRouter)
 app.use('/todo', todoRouter)
-app.use('/todolist' , todolistRouter)
+app.use('/todolist', todolistRouter)
 
-app.listen(3000)
+app.listen(8000)
 
 connectDB()
