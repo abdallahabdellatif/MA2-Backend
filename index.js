@@ -26,7 +26,7 @@ app.use('/', (req, res, next) => {
     //   next();
     return res.json({
       statusCode: 1,
-      error: 'invalid token',
+      error: 'Unauthorised',
     })
   }
 })

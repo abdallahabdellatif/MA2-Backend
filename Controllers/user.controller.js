@@ -10,7 +10,10 @@ const addUser = async (req, res) => {
     const user = req.body.User;
     const data = await UserModel.findOne({ email: user.email });
     if (data) {
-      return res.json({ statusCode: 1, message: "Error" });
+      return res.json({
+        statusCode: 1,
+        message: "Invalid Email,this email already exists",
+      });
     } else {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(user.password, salt);
@@ -18,14 +21,14 @@ const addUser = async (req, res) => {
       await UserModel.create(user);
       return res.json({
         statusCode: 0,
-        message: "Success",
+        message: "Your account successfully created",
       });
     }
   } catch (exception) {
     console.log(exception);
     return res.json({
       statusCode: 1,
-      error: "exception",
+      error: "Server Error",
     });
   }
 };
@@ -35,10 +38,7 @@ const signIn = async (req, res) => {
     console.log(req.body);
     const email = req.body.User.email;
     const password = req.body.User.password;
-    // const phone = req.body.User.phone
     const data = await UserModel.findOne({ email: email });
-
-    console.log("hi", data);
     if (data) {
       const validPassword = await bcrypt.compare(password, data.password);
       if (validPassword) {
@@ -59,13 +59,13 @@ const signIn = async (req, res) => {
       } else {
         return res.json({
           statusCode: 1,
-          message: "Error",
+          message: "Invalid Password",
         });
       }
     } else {
       return res.json({
         statusCode: 1,
-        message: "Error",
+        message: "Invalid email,this email does not exist",
       });
     }
 
@@ -77,7 +77,7 @@ const signIn = async (req, res) => {
     console.log(exception);
     return res.json({
       statusCode: 1,
-      error: "exception",
+      error: "Server Error",
     });
   }
 };
@@ -87,12 +87,27 @@ const getMyNotes = async (req, res) => {
     // console.log(req.body)
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
-    const data = await UserModel.findById(userId).populate("Notes");
-    console.log(data.Notes);
-    return res.json({ msg: "success", statusCode: 0, data: data.Notes });
+    try {
+      const data = await UserModel.findById(userId).populate("Notes");
+      console.log(data.Notes);
+      return res.json({
+        msg: "Notes successfully retrieved,now you can view your notes",
+        statusCode: 0,
+        data: data.Notes,
+      });
+    } catch (err) {
+      // console.log(err)
+      return res.json({
+        err: "Server Error",
+        statusCode: 1,
+      });
+    }
   } catch (err) {
     // console.log(err)
-    return res.json({ err: "server error", statusCode: 1 });
+    return res.json({
+      err: "Unauthorised User",
+      statusCode: 1,
+    });
   }
 };
 
@@ -101,12 +116,21 @@ const getMyLists = async (req, res) => {
     // console.log(req.body)
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
-    const data = await UserModel.findById(userId).populate("lists");
-    console.log(data);
-    return res.json({ msg: "success", statusCode: 0, data: data.lists });
+    try {
+      const data = await UserModel.findById(userId).populate("lists");
+      console.log(data);
+      return res.json({
+        msg: "Your lists retrieved successfully,now you can view your lists",
+        statusCode: 0,
+        data: data.lists,
+      });
+    } catch (err) {
+      // console.log(err)
+      return res.json({ err: "Server Error", statusCode: 1 });
+    }
   } catch (err) {
     // console.log(err)
-    return res.json({ err: "server error", statusCode: 1 });
+    return res.json({ err: "Unauthorised User", statusCode: 1 });
   }
 };
 
@@ -116,12 +140,12 @@ const signOut = (req, res) => {
     jwt.verify(token, process.env.SECRET);
     return res.json({
       status: 0,
-      message: "Success",
+      message: "Signed out successfully",
     });
   } catch (err) {
     return res.json({
       status: 1,
-      message: "Error",
+      message: "Unauthorised User",
     });
   }
 };
