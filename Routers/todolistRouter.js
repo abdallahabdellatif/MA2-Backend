@@ -8,6 +8,7 @@ const {
 const {
   validateAddTodolist,
   validateUpdateTodolist,
+  validDeleteList,
 } = require('../Validation/todolistsValidation')
 const router = express.Router()
 
@@ -15,7 +16,7 @@ const router = express.Router()
 
 router.post('/addnewlist', validateAddTodolist, addTodolist)
 
-router.post('/deletelist', deleteTodolist)
+router.post('/deletelist', validDeleteList, deleteTodolist)
 
 router.post('/updatelistTitle', validateUpdateTodolist, updateTodolist)
 
