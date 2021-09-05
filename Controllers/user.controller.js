@@ -1,48 +1,48 @@
-const UserModel = require("../Models/user.model");
-const NoteModel = require("../Models/note.model");
-const ListModel = require("../Models/todolist.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const UserModel = require('../Models/user.model')
+const NoteModel = require('../Models/note.model')
+const ListModel = require('../Models/todolist.model')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const addUser = async (req, res) => {
   try {
-    const user = req.body.User;
-    const data = await UserModel.findOne({ email: user.email });
+    const user = req.body.User
+    const data = await UserModel.findOne({ email: user.email })
     if (data) {
-      return res.json({ statusCode: 1, message: "Error" });
+      return res.json({ statusCode: 1, message: 'Error' })
     } else {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(user.password, salt);
-      console.log(user);
-      await UserModel.create(user);
+      const salt = await bcrypt.genSalt(10)
+      user.password = await bcrypt.hash(user.password, salt)
+      console.log(user)
+      await UserModel.create(user)
       return res.json({
         statusCode: 0,
-        message: "Success",
-      });
+        message: 'Success',
+      })
     }
   } catch (exception) {
-    console.log(exception);
+    console.log(exception)
     return res.json({
       statusCode: 1,
-      error: "exception",
-    });
+      error: 'exception',
+    })
   }
-};
+}
 
 const signIn = async (req, res) => {
   try {
-    console.log(req.body);
-    const email = req.body.User.email;
-    const password = req.body.User.password;
-    const phone = req.body.User.phone;
-    const data = await UserModel.findOne({ email: email });
+    console.log(req.body)
+    const email = req.body.User.email
+    const password = req.body.User.password
+    const phone = req.body.User.phone
+    const data = await UserModel.findOne({ email: email })
 
-    console.log("hi", data);
+    console.log('hi', data)
     if (data) {
-      const validPassword = await bcrypt.compare(password, data.password);
+      const validPassword = await bcrypt.compare(password, data.password)
       if (validPassword) {
-        console.log(process.env);
+        // console.log(process.env);
         const token = jwt.sign(
           {
             id: data._id,
@@ -50,78 +50,81 @@ const signIn = async (req, res) => {
             password: data.password,
           },
           process.env.SECRET
-        );
-        res.setHeader("auth", token);
+        )
+        res.setHeader('auth', token)
         return res.json({
           statusCode: 0,
-          message: "Signed in sucessfully",
-        });
+          message: 'Signed in sucessfully',
+        })
       } else {
         return res.json({
           statusCode: 1,
-          message: "Error",
-        });
+          message: 'Error',
+        })
       }
     } else {
       return res.json({
         statusCode: 1,
-        message: "Error",
-      });
+        message: 'Error',
+      })
     }
 
-    return res.json({
-      statusCode: 0,
-      message: "Success",
-    });
+    // return res.json({
+    //   statusCode: 0,
+    //   message: 'Success',
+    // })
   } catch (exception) {
-    console.log(exception);
+    console.log(exception)
     return res.json({
       statusCode: 1,
-      error: "exception",
-    });
+      error: 'exception',
+    })
   }
-};
+}
 
 const getMyNotes = async (req, res) => {
   try {
-    console.log(req.body);
-    const userId = req.body.User.id;
-    const data = await UserModel.findById(userId).populate("Notes");
-    console.log(data.Notes);
-    return res.json({ msg: "success", statusCode: 0, data: data.Notes });
+    // console.log(req.body)
+    const payload = jwt.verify(token, process.env.SECRET)
+    const userId = payload.id
+    const data = await UserModel.findById(userId).populate('Notes')
+    console.log(data.Notes)
+    return res.json({ msg: 'success', statusCode: 0, data: data.Notes })
   } catch (err) {
     // console.log(err)
-    return res.json({ err: "server error", statusCode: 1 });
+    return res.json({ err: 'server error', statusCode: 1 })
   }
-};
+}
 
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
-    const userId = req.body.User.id;
-    const data = await ListModel.find({ _id: userId });
-    return res.json({ msg: "success", statusCode: 0, data });
+    const payload = jwt.verify(token, process.env.SECRET)
+    const userId = payload.id
+    const data = await ListModel.findById(userId).populate('lists')
+    console.log(data)
+    return res.json({ msg: 'success', statusCode: 0, data })
   } catch (err) {
     // console.log(err)
-    return res.json({ err: "server error", statusCode: 1 });
+    return res.json({ err: 'server error', statusCode: 1 })
   }
-};
+}
 
 const signOut = (req, res) => {
-  const token = req.headers["auth"];
+  const token = req.headers['auth']
   try {
-    jwt.verify(token, process.env.SECRET);
+    jwt.verify(token, process.env.SECRET)
     return res.json({
       status: 0,
-      message: "Success",
-    });
+      message: 'Success',
+    })
   } catch (err) {
     return res.json({
       status: 1,
-      message: "Error",
-    });
+      message: 'Error',
+    })
   }
-};
+}
 
 // const addNote = async (req, res) => {
 //   try {
@@ -172,4 +175,4 @@ const signOut = (req, res) => {
 //   }
 // };
 
-module.exports = { getMyNotes, addUser, getMyLists, signIn };
+module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut }
