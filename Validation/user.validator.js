@@ -6,16 +6,20 @@ const validateSignup = (req, res, next) => {
     User: joi
       .object({
         name: joi.string().required(),
-        phone: joi.string().required(),
-        email: joi.string().required().pattern(new RegExp("/S+@S+.S+/")),
-        password: joi
+        email: joi
           .string()
+          .pattern(new RegExp("^[^@]+@[^@]+.[^@]+$"))
           .required()
-          .pattern(
-            new RegExp(
-              "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$"
-            )
-          ),
+          .messages({
+            "string.pattern": `email should be of the form name@mail.com`,
+            "any.required": "email is required",
+          }),
+        password: joi.string().required(),
+        // .pattern(
+        //   new RegExp(
+        //     "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$"
+        //   )
+        // ),
       })
       .required(),
   });

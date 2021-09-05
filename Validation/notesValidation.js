@@ -6,7 +6,6 @@ const validateAddNote = (req, res, next) => {
     Note: Joi.object({
       title: Joi.string().required().allow(""),
       content: Joi.string().required(),
-      userId: Joi.string().required(),
     }).required(),
   });
 

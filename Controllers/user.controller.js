@@ -2,6 +2,8 @@ const UserModel = require("../Models/user.model");
 const NoteModel = require("../Models/note.model");
 const ListModel = require("../Models/todolist.model");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const addUser = async (req, res) => {
   try {
@@ -40,9 +42,19 @@ const signIn = async (req, res) => {
     if (data) {
       const validPassword = await bcrypt.compare(password, data.password);
       if (validPassword) {
+        console.log(process.env);
+        const token = jwt.sign(
+          {
+            id: data._id,
+            email: data.email,
+            password: data.password,
+          },
+          process.env.SECRET
+        );
+        res.setHeader("auth", token);
         return res.json({
           statusCode: 0,
-          message: "Success",
+          message: "Signed in sucessfully",
         });
       } else {
         return res.json({

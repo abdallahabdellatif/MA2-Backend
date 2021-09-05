@@ -17,7 +17,7 @@ const addNote = async (req, res) => {
     req.body.Note.lastEdited = new Date();
     // console.log(req.body)
     const newNote = await NoteModel.create(req.body.Note);
-    const userId = "1w34";
+    const userId = req.payload.id;
     const user = await UserModel.findById(userId);
     user.Notes.push(newNote.id);
     await user.save();
