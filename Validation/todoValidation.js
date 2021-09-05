@@ -3,8 +3,9 @@ const Joi = require('joi')
 const validateAddTodo = (req, res, next) => {
   const schema = Joi.object({
     Todo: Joi.object({
-      listId: Joi.string().require(),
+      listId: Joi.string().required(),
       content: Joi.string().required(),
+      priority: Joi.number().required(),
     }).required(),
   })
   // console.log("abdalahhh")
@@ -24,6 +25,7 @@ const validateUpdateTodo = (req, res, next) => {
     Todo: Joi.object({
       id: Joi.string().required(),
       content: Joi.string().required(),
+      priority: Joi.number().required(),
     }),
   })
 

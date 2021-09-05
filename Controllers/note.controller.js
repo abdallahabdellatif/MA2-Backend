@@ -54,9 +54,12 @@ const deleteNote = async (req, res) => {
     //const userId = "d3r";
     const userId = req.payload.id
     await NoteModel.findByIdAndDelete(req.body.id) //id of the note
-    const user = await UserModel.findById(userId)
-    user.Notes = user.Notes.filter((id) => id !== req.body.id)
-    await user.save()
+    // const user = await UserModel.findById(userId)
+    // user.Notes = user.Notes.filter((id) => id !== req.body.id)
+    // await user.save()
+    await UserModel.findByIdAndUpdate(userId, {
+      $pull: { Notes: { $in: [req.body.id] } },
+    })
     return res.json({ msg: 'success', statusCode: 0 })
   } catch (err) {
     // console.log(err)

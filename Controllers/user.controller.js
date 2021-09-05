@@ -35,7 +35,7 @@ const signIn = async (req, res) => {
     console.log(req.body)
     const email = req.body.User.email
     const password = req.body.User.password
-    const phone = req.body.User.phone
+    // const phone = req.body.User.phone
     const data = await UserModel.findOne({ email: email })
 
     console.log('hi', data)
@@ -85,7 +85,7 @@ const signIn = async (req, res) => {
 const getMyNotes = async (req, res) => {
   try {
     // console.log(req.body)
-    const payload = jwt.verify(token, process.env.SECRET)
+    const payload = jwt.verify(req.headers['auth'], process.env.SECRET)
     const userId = payload.id
     const data = await UserModel.findById(userId).populate('Notes')
     console.log(data.Notes)
@@ -99,11 +99,11 @@ const getMyNotes = async (req, res) => {
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
-    const payload = jwt.verify(token, process.env.SECRET)
+    const payload = jwt.verify(req.headers['auth'], process.env.SECRET)
     const userId = payload.id
-    const data = await ListModel.findById(userId).populate('lists')
+    const data = await UserModel.findById(userId).populate('lists')
     console.log(data)
-    return res.json({ msg: 'success', statusCode: 0, data })
+    return res.json({ msg: 'success', statusCode: 0, data: data.lists })
   } catch (err) {
     // console.log(err)
     return res.json({ err: 'server error', statusCode: 1 })
