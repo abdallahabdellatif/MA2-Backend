@@ -35,7 +35,7 @@ const signIn = async (req, res) => {
     console.log(req.body);
     const email = req.body.User.email;
     const password = req.body.User.password;
-    const phone = req.body.User.phone;
+    //const phone = req.body.User.phone;
     const data = await UserModel.findOne({ email: email });
 
     console.log("hi", data);
@@ -172,4 +172,4 @@ const signOut = (req, res) => {
 //   }
 // };
 
-module.exports = { getMyNotes, addUser, getMyLists, signIn };
+module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut };

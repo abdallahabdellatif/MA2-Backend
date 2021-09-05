@@ -14,12 +14,7 @@ const validateSignup = (req, res, next) => {
             "string.pattern": `email should be of the form name@mail.com`,
             "any.required": "email is required",
           }),
-        password: joi.string().required(),
-        // .pattern(
-        //   new RegExp(
-        //     "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,10}$"
-        //   )
-        // ),
+        password: joi.string().required().min(8).max(25),
       })
       .required(),
   });
@@ -38,8 +33,15 @@ const validateSignin = (req, res, next) => {
   const schema = joi.object({
     User: joi
       .object({
-        email: joi.string().required(),
-        password: joi.string().required(),
+        email: joi
+          .string()
+          .pattern(new RegExp("^[^@]+@[^@]+.[^@]+$"))
+          .required()
+          .messages({
+            "string.pattern": `email should be of the form name@mail.com`,
+            "any.required": "email is required",
+          }),
+        password: joi.string().required().min(8).max(25),
       })
       .required(),
   });
