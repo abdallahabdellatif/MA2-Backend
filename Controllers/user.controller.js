@@ -107,6 +107,22 @@ const getMyLists = async (req, res) => {
   }
 };
 
+const signOut = (req, res) => {
+  const token = req.headers["auth"];
+  try {
+    jwt.verify(token, process.env.SECRET);
+    return res.json({
+      status: 0,
+      message: "Success",
+    });
+  } catch (err) {
+    return res.json({
+      status: 1,
+      message: "Error",
+    });
+  }
+};
+
 // const addNote = async (req, res) => {
 //   try {
 //     console.log(req.body);
