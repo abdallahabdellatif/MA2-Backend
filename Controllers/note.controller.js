@@ -22,10 +22,10 @@ const addNote = async (req, res) => {
     user.Notes.push(newNote.id)
     await user.save()
     // user.notes.pusj(newNote.id)
-    return res.json({ msg: 'Note added successfully', statusCode: 0 })
+    return res.json({ message: 'Note added successfully', statusCode: 0 })
   } catch (err) {
     console.log(err)
-    return res.json({ err: 'server error', statusCode: 1 })
+    return res.json({ error: 'server error', statusCode: 1 })
   }
 }
 
@@ -34,7 +34,7 @@ const updateNote = async (req, res) => {
     // console.log(req.body)
     const note = await NoteModel.findById(req.body.id) //id of the note
     if (!note) {
-      return res.json({ err: 'ID not found', statusCode: 1 })
+      return res.json({ error: 'ID not found', statusCode: 1 })
     }
     // console.log(note)
     const edited =
@@ -44,10 +44,10 @@ const updateNote = async (req, res) => {
       content: req.body.content,
       lastEdited: edited ? new Date() : note.lastEdited,
     })
-    return res.json({ msg: 'Note updated successfully', statusCode: 0 })
+    return res.json({ message: 'Note updated successfully', statusCode: 0 })
   } catch (err) {
     // console.log(err)
-    return res.json({ err: 'server error', statusCode: 1 })
+    return res.json({ error: 'server error', statusCode: 1 })
   }
 }
 
@@ -57,7 +57,7 @@ const deleteNote = async (req, res) => {
     //const userId = "d3r";
     const userId = req.payload.id
     const del = await NoteModel.findByIdAndDelete(req.body.id) //id of the note
-    if (!del) return res.json({ err: 'Resource not found', statusCode: 1 })
+    if (!del) return res.json({ error: 'Resource not found', statusCode: 1 })
 
     // const user = await UserModel.findById(userId)
     // user.Notes = user.Notes.filter((id) => id !== req.body.id)
@@ -65,10 +65,10 @@ const deleteNote = async (req, res) => {
     await UserModel.findByIdAndUpdate(userId, {
       $pull: { Notes: { $in: [req.body.id] } },
     })
-    return res.json({ msg: 'Note deleted successfully', statusCode: 0 })
+    return res.json({ message: 'Note deleted successfully', statusCode: 0 })
   } catch (err) {
     // console.log(err)
-    return res.json({ err: 'server error', statusCode: 1 })
+    return res.json({ error: 'server error', statusCode: 1 })
   }
 }
 
