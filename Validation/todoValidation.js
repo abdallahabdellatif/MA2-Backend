@@ -40,7 +40,7 @@ const validateUpdateTodo = (req, res, next) => {
 }
 const validateGetTodos = (req, res, next) => {
   const schema = Joi.object({
-    id: Joi.string().required().min(24).max(24),
+    id: Joi.string().required().length(24),
   })
 
   const isValid = schema.validate(req.body)

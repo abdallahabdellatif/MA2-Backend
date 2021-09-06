@@ -4,9 +4,10 @@ const TodoModel = require('../Models/todo.model')
 const getMyTodos = async (req, res) => {
   try {
     // console.log(req.body.id)
-    const list = await TodolistModel.findById(req.body.id).populate('todos')
-    if (!list)
+    if(!(await TodoModel.findById(req.body.Todo.id)))
       return res.json({ error: "id doesn't belong to a list", statusCode: 1 })
+    const list = await TodolistModel.findById(req.body.id).populate('todos')
+    
 
     // list = await TodolistModel.findById(req.body.id)
     return res.json({
@@ -15,7 +16,7 @@ const getMyTodos = async (req, res) => {
       todos: list.todos,
     })
   } catch (err) {
-    return res.json({ err: 'Server Error', statusCode: 1 })
+    return res.json({ error: 'Server Error', statusCode: 1 })
   }
 }
 
