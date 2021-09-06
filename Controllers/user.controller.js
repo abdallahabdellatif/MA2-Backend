@@ -33,6 +33,30 @@ const addUser = async (req, res) => {
   }
 };
 
+const signUp1 = async (req, res) => {
+  try {
+    const user = req.body.User;
+    const data = await UserModel.findOne({ email: user.email });
+    if (data) {
+      return res.json({
+        statusCode: 1,
+        message: "Invalid Email,this email already exists",
+      });
+    } else {
+      return res.json({
+        statusCode: 0,
+        message: "Email and Name successfully validated",
+      });
+    }
+  } catch (exception) {
+    console.log(exception);
+    return res.json({
+      statusCode: 1,
+      error: "Server Error",
+    });
+  }
+};
+
 const signIn = async (req, res) => {
   try {
     console.log(req.body);
@@ -130,7 +154,7 @@ const getMyLists = async (req, res) => {
     }
   } catch (err) {
     // console.log(err)
-    return res.json({ err: "Unauthorised User", statusCode: 1 });
+    return res.json({ err:add "Unauthorised User", statusCode: 1 });
   }
 };
 
@@ -199,4 +223,4 @@ const signOut = (req, res) => {
 //   }
 // };
 
-module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut };
+module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut, signUp1 };
