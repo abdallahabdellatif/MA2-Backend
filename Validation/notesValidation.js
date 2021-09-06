@@ -22,9 +22,11 @@ const validateAddNote = (req, res, next) => {
 
 const validateUpdateNote = (req, res, next) => {
   const schema = Joi.object({
-    id: Joi.string().required(),
+    
+    id: Joi.string().required().length(24),
     title: Joi.string().required().allow(''),
     content: Joi.string().required(),
+    
   })
 
   const isValid = schema.validate(req.body)
@@ -39,7 +41,7 @@ const validateUpdateNote = (req, res, next) => {
 
 const validateDeleteNote = (req, res, next) => {
   const schema = Joi.object({
-    id: Joi.string().required(),
+    id: Joi.string().required().length(24),
   })
 
   const isValid = schema.validate(req.body)

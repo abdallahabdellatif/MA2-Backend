@@ -3,9 +3,9 @@ const Joi = require('joi')
 const validateAddTodo = (req, res, next) => {
   const schema = Joi.object({
     Todo: Joi.object({
-      listId: Joi.string().required(),
+      listId: Joi.string().required().length(24),
       content: Joi.string().required(),
-      priority: Joi.number().required(),
+      priority: Joi.number().required().min(1).max(3),
     }).required(),
   })
   // console.log("abdalahhh")
@@ -23,7 +23,7 @@ const validateAddTodo = (req, res, next) => {
 const validateUpdateTodo = (req, res, next) => {
   const schema = Joi.object({
     Todo: Joi.object({
-      id: Joi.string().required(),
+      id: Joi.string().required().length(24),
       content: Joi.string().required(),
       priority: Joi.number().required(),
     }),
@@ -40,7 +40,7 @@ const validateUpdateTodo = (req, res, next) => {
 }
 const validateGetTodos = (req, res, next) => {
   const schema = Joi.object({
-    id: Joi.string().required(),
+    id: Joi.string().required().min(24).max(24),
   })
 
   const isValid = schema.validate(req.body)
@@ -56,8 +56,8 @@ const validateGetTodos = (req, res, next) => {
 const validateDeleteTodo = (req, res, next) => {
   const schema = Joi.object({
     Todo: Joi.object({
-      id: Joi.string().required(),
-      listId: Joi.string().required(),
+      id: Joi.string().required().length(24),
+      listId: Joi.string().required().length(24),
     }),
   })
 

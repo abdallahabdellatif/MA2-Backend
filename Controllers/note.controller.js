@@ -16,7 +16,7 @@ const addNote = async (req, res) => {
   try {
     req.body.Note.lastEdited = new Date()
     // console.log(req.body)
-    const newNote = await NoteModel.create(req.body.Note)
+    const newNote = await NoteModel.create(req.body)
     const userId = req.payload.id
     const user = await UserModel.findById(userId)
     user.Notes.push(newNote.id)
