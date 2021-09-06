@@ -1,46 +1,46 @@
-const UserModel = require("../Models/user.model");
-const NoteModel = require("../Models/note.model");
-const ListModel = require("../Models/todolist.model");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const UserModel = require('../Models/user.model')
+const NoteModel = require('../Models/note.model')
+const ListModel = require('../Models/todolist.model')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const addUser = async (req, res) => {
   try {
-    const user = req.body.User;
-    const data = await UserModel.findOne({ email: user.email });
+    const user = req.body.User
+    const data = await UserModel.findOne({ email: user.email })
     if (data) {
       return res.json({
         statusCode: 1,
-        message: "Invalid Email,this email already exists",
-      });
+        error: 'Invalid Email,this email already exists',
+      })
     } else {
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(user.password, salt);
-      console.log(user);
-      await UserModel.create(user);
+      const salt = await bcrypt.genSalt(10)
+      user.password = await bcrypt.hash(user.password, salt)
+      console.log(user)
+      await UserModel.create(user)
       return res.json({
         statusCode: 0,
-        message: "Your account successfully created",
-      });
+        message: 'Your account successfully created',
+      })
     }
   } catch (exception) {
-    console.log(exception);
+    console.log(exception)
     return res.json({
       statusCode: 1,
-      error: "Server Error",
-    });
+      error: 'Server Error',
+    })
   }
-};
+}
 
 const signIn = async (req, res) => {
   try {
-    console.log(req.body);
-    const email = req.body.User.email;
-    const password = req.body.User.password;
-    const data = await UserModel.findOne({ email: email });
+    // console.log(req.body)
+    const email = req.body.User.email
+    const password = req.body.User.password
+    const data = await UserModel.findOne({ email: email })
     if (data) {
-      const validPassword = await bcrypt.compare(password, data.password);
+      const validPassword = await bcrypt.compare(password, data.password)
       if (validPassword) {
         // console.log(process.env);
         const token = jwt.sign(
@@ -50,23 +50,23 @@ const signIn = async (req, res) => {
             password: data.password,
           },
           process.env.SECRET
-        );
-        res.setHeader("auth", token);
+        )
+        res.setHeader('auth', token)
         return res.json({
           statusCode: 0,
-          message: "Signed in sucessfully",
-        });
+          message: 'Signed in sucessfully',
+        })
       } else {
         return res.json({
           statusCode: 1,
-          message: "Invalid Password",
-        });
+          error: 'Invalid Password',
+        })
       }
     } else {
       return res.json({
         statusCode: 1,
-        message: "Invalid email,this email does not exist",
-      });
+        error: 'Invalid email,this email does not exist',
+      })
     }
 
     // return res.json({
@@ -74,81 +74,82 @@ const signIn = async (req, res) => {
     //   message: 'Success',
     // })
   } catch (exception) {
-    console.log(exception);
+    console.log(exception)
     return res.json({
       statusCode: 1,
-      error: "Server Error",
-    });
+      error: 'Server Error',
+    })
   }
-};
+}
 
 const getMyNotes = async (req, res) => {
   try {
     // console.log(req.body)
-    const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
-    const userId = payload.id;
+    const payload = jwt.verify(req.headers['auth'], process.env.SECRET)
+    const userId = payload.id
     try {
-      const data = await UserModel.findById(userId).populate("Notes");
-      console.log(data.Notes);
+      const data = await UserModel.findById(userId).populate('Notes')
+      console.log(data.Notes)
       return res.json({
-        msg: "Notes successfully retrieved,now you can view your notes",
+        message: 'Notes successfully retrieved,now you can view your notes',
         statusCode: 0,
         data: data.Notes,
-      });
+      })
     } catch (err) {
       // console.log(err)
       return res.json({
-        err: "Server Error",
+        error: 'Server Error',
         statusCode: 1,
-      });
+      })
     }
   } catch (err) {
     // console.log(err)
     return res.json({
-      err: "Unauthorised User",
+      error: 'Unauthorised User',
       statusCode: 1,
-    });
+    })
   }
-};
+}
 
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
-    const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
-    const userId = payload.id;
+    const payload = jwt.verify(req.headers['auth'], process.env.SECRET)
+    const userId = payload.id
     try {
-      const data = await UserModel.findById(userId).populate("lists");
-      console.log(data);
+      const data = await UserModel.findById(userId).populate('lists')
+      console.log(data)
       return res.json({
-        msg: "Your lists retrieved successfully,now you can view your lists",
+        message:
+          'Your lists retrieved successfully,now you can view your lists',
         statusCode: 0,
         data: data.lists,
-      });
+      })
     } catch (err) {
       // console.log(err)
-      return res.json({ err: "Server Error", statusCode: 1 });
+      return res.json({ error: 'Server Error', statusCode: 1 })
     }
   } catch (err) {
     // console.log(err)
-    return res.json({ err: "Unauthorised User", statusCode: 1 });
+    return res.json({ error: 'Unauthorised User', statusCode: 1 })
   }
-};
+}
 
 const signOut = (req, res) => {
-  const token = req.headers["auth"];
+  const token = req.headers['auth']
   try {
-    jwt.verify(token, process.env.SECRET);
+    jwt.verify(token, process.env.SECRET)
     return res.json({
       status: 0,
-      message: "Signed out successfully",
-    });
+      message: 'Signed out successfully',
+    })
   } catch (err) {
     return res.json({
       status: 1,
-      message: "Unauthorised User",
-    });
+      error: 'Unauthorised User',
+    })
   }
-};
+}
 
 // const addNote = async (req, res) => {
 //   try {
@@ -199,4 +200,4 @@ const signOut = (req, res) => {
 //   }
 // };
 
-module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut };
+module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut }
