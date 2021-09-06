@@ -150,6 +150,29 @@ const signOut = (req, res) => {
     })
   }
 }
+const getUserDetails = async (req, res) => {
+  const token = req.headers['auth']
+  try {
+    jwt.verify(token, process.env.SECRET)
+    const user = await UserModel.findById(req.payload.id)
+    if (!user) {
+      return res.json({
+        status: 1,
+        error: 'User Not Found',
+      })
+    }
+    return res.json({
+      status: 0,
+      message: 'User Retrieved Sucessfully',
+      user,
+    })
+  } catch (err) {
+    return res.json({
+      status: 1,
+      error: 'Unauthorised User',
+    })
+  }
+}
 
 // const addNote = async (req, res) => {
 //   try {
@@ -200,4 +223,11 @@ const signOut = (req, res) => {
 //   }
 // };
 
-module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut }
+module.exports = {
+  getMyNotes,
+  addUser,
+  getMyLists,
+  signIn,
+  signOut,
+  getUserDetails,
+}

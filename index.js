@@ -12,7 +12,11 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken')
 
 app.use(express.json())
-app.use(cors())
+app.use(
+  cors({
+    exposedHeaders: 'auth',
+  })
+)
 app.use('/users', usersRouter)
 app.use('/', (req, res, next) => {
   try {
