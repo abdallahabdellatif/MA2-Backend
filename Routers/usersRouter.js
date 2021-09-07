@@ -24,6 +24,7 @@ router.post("/getmylists", getMyLists);
 router.post("/signout", signOut);
 router.post("/userdetails", validateUserDetails, getUserDetails);
 router.post("/signup", validateSignup, addUser);
+router.post("/signup1", signUp1);
 router.post("/signin", validateSignin, signIn);
 router.post("/Home", (req, res) => {
   res.send("Welcome to Homepage");
