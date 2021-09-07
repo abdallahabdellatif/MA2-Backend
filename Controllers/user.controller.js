@@ -73,7 +73,10 @@ const signIn = async (req, res) => {
             email: data.email,
             password: data.password,
           },
-          process.env.SECRET
+          process.env.SECRET,
+          {
+            expiresIn: "5h",
+          }
         );
         res.set("authTokennnnn", token);
         return res.json({
