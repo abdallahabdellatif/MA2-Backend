@@ -21,7 +21,7 @@ app.use("/users", usersRouter);
 app.use("/", (req, res, next) => {
   try {
     const token = req.headers["auth"];
-    // console.log(req);
+    console.log("req");
     const resp = jwt.verify(token, process.env.SECRET);
     req.payload = resp;
     // console.log(resp);

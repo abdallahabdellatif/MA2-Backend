@@ -139,9 +139,9 @@ const getMyNotes = async (req, res) => {
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
+    // console.log('abdooooooo',payload)
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
-    console.log('abdooooooo',payload)
     try {
       const data = await UserModel.findById(userId).populate("lists");
       console.log(data);
