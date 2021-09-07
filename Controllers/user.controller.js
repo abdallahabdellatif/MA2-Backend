@@ -12,7 +12,7 @@ const addUser = async (req, res) => {
     if (data) {
       return res.json({
         statusCode: 1,
-        message: "Invalid Email,this email already exists",
+        error: "Invalid Email,this email already exists",
       });
     } else {
       const salt = await bcrypt.genSalt(10);
@@ -59,7 +59,7 @@ const signUp1 = async (req, res) => {
 
 const signIn = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body)
     const email = req.body.User.email;
     const password = req.body.User.password;
     const data = await UserModel.findOne({ email: email });
@@ -67,7 +67,7 @@ const signIn = async (req, res) => {
       const validPassword = await bcrypt.compare(password, data.password);
       if (validPassword) {
         // console.log(process.env);
-        const token = jwt.sign(
+        const token = await jwt.sign(
           {
             id: data._id,
             email: data.email,
@@ -75,21 +75,22 @@ const signIn = async (req, res) => {
           },
           process.env.SECRET
         );
-        res.setHeader("auth", token);
+        res.set("authTokennnnn", token);
         return res.json({
           statusCode: 0,
           message: "Signed in sucessfully",
+          token,
         });
       } else {
         return res.json({
           statusCode: 1,
-          message: "Invalid Password",
+          error: "Invalid Password",
         });
       }
     } else {
       return res.json({
         statusCode: 1,
-        message: "Invalid email,this email does not exist",
+        error: "Invalid email,this email does not exist",
       });
     }
 
@@ -115,21 +116,21 @@ const getMyNotes = async (req, res) => {
       const data = await UserModel.findById(userId).populate("Notes");
       console.log(data.Notes);
       return res.json({
-        msg: "Notes successfully retrieved,now you can view your notes",
+        message: "Notes successfully retrieved,now you can view your notes",
         statusCode: 0,
         data: data.Notes,
       });
     } catch (err) {
       // console.log(err)
       return res.json({
-        err: "Server Error",
+        error: "Server Error",
         statusCode: 1,
       });
     }
   } catch (err) {
     // console.log(err)
     return res.json({
-      err: "Unauthorised User",
+      error: "Unauthorised User",
       statusCode: 1,
     });
   }
@@ -144,17 +145,18 @@ const getMyLists = async (req, res) => {
       const data = await UserModel.findById(userId).populate("lists");
       console.log(data);
       return res.json({
-        msg: "Your lists retrieved successfully,now you can view your lists",
+        message:
+          "Your lists retrieved successfully,now you can view your lists",
         statusCode: 0,
         data: data.lists,
       });
     } catch (err) {
       // console.log(err)
-      return res.json({ err: "Server Error", statusCode: 1 });
+      return res.json({ error: "Server Error", statusCode: 1 });
     }
   } catch (err) {
     // console.log(err)
-    return res.json({ err:add "Unauthorised User", statusCode: 1 });
+    return res.json({ error: "Unauthorised User", statusCode: 1 });
   }
 };
 
@@ -169,7 +171,7 @@ const signOut = (req, res) => {
   } catch (err) {
     return res.json({
       status: 1,
-      message: "Unauthorised User",
+      error: "Unauthorised User",
     });
   }
 };

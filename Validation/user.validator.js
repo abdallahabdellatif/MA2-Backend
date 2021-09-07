@@ -1,5 +1,5 @@
-const joi = require("joi");
-const bcrypt = require("bcrypt");
+const joi = require('joi')
+const bcrypt = require('bcrypt')
 
 const validateSignup = (req, res, next) => {
   const schema = joi.object({
@@ -8,26 +8,26 @@ const validateSignup = (req, res, next) => {
         name: joi.string().required(),
         email: joi
           .string()
-          .pattern(new RegExp("^[^@]+@[^@]+.[^@]+$"))
+          .pattern(new RegExp('^[^@]+@[^@]+.[^@]+$'))
           .required()
           .messages({
-            "string.pattern": `email should be of the form name@mail.com`,
-            "any.required": "email is required",
+            'string.pattern': `email should be of the form name@mail.com`,
+            'any.required': 'email is required',
           }),
         password: joi.string().required().min(8).max(25),
       })
       .required(),
-  });
+  })
 
-  const isValid = schema.validate(req.body);
+  const isValid = schema.validate(req.body)
   if (isValid.error) {
     return res.json({
       statusCode: 1,
       error: isValid.error.details[0].message,
-    });
+    })
   }
-  return next();
-};
+  return next()
+}
 
 const validateSignup1 = (req, res, next) => {
   const schema = joi.object({
@@ -62,30 +62,30 @@ const validateSignin = (req, res, next) => {
       .object({
         email: joi
           .string()
-          .pattern(new RegExp("^[^@]+@[^@]+.[^@]+$"))
+          .pattern(new RegExp('^[^@]+@[^@]+.[^@]+$'))
           .required()
           .messages({
-            "string.pattern": `email should be of the form name@mail.com`,
-            "any.required": "email is required",
+            'string.pattern': `email should be of the form name@mail.com`,
+            'any.required': 'email is required',
           }),
-        password: joi.string().required().min(8).max(25),
+        password: joi.string().required(),
       })
       .required(),
-  });
-  const isValid = schema.validate(req.body);
+  })
+  const isValid = schema.validate(req.body)
   if (isValid.error) {
     return res.json({
       statusCode: 1,
       error: isValid.error.details[0].message,
-    });
+    })
   }
-  return next();
-};
+  return next()
+}
 
-const validateSignout = (req, res, next) => {};
+const validateSignout = (req, res, next) => {}
 
 module.exports = {
   validateSignup,
   validateSignup1,
   validateSignin,
-};
+}
