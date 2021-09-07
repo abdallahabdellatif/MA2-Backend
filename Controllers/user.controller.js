@@ -153,8 +153,8 @@ const signOut = (req, res) => {
 const getUserDetails = async (req, res) => {
   const token = req.headers['auth']
   try {
-    jwt.verify(token, process.env.SECRET)
-    const user = await UserModel.findById(req.payload.id)
+    const payload = jwt.verify(token, process.env.SECRET)
+    const user = await UserModel.findById(payload.id)
     if (!user) {
       return res.json({
         status: 1,
