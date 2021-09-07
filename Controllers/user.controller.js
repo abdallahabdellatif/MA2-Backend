@@ -141,6 +141,7 @@ const getMyLists = async (req, res) => {
     // console.log(req.body)
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
+    console.log('abdooooooo',payload)
     try {
       const data = await UserModel.findById(userId).populate("lists");
       console.log(data);
@@ -174,34 +175,7 @@ const signOut = (req, res) => {
       error: "Unauthorised User",
     });
   }
-<<<<<<< HEAD
-}
-const getUserDetails = async (req, res) => {
-  const token = req.headers['auth']
-  try {
-    jwt.verify(token, process.env.SECRET)
-    const user = await UserModel.findById(req.payload.id)
-    if (!user) {
-      return res.json({
-        status: 1,
-        error: 'User Not Found',
-      })
-    }
-    return res.json({
-      status: 0,
-      message: 'User Retrieved Sucessfully',
-      user,
-    })
-  } catch (err) {
-    return res.json({
-      status: 1,
-      error: 'Unauthorised User',
-    })
-  }
-}
-=======
 };
->>>>>>> 47b244d25846c552041683f36a740e08044106dc
 
 // const addNote = async (req, res) => {
 //   try {
@@ -252,15 +226,4 @@ const getUserDetails = async (req, res) => {
 //   }
 // };
 
-<<<<<<< HEAD
-module.exports = {
-  getMyNotes,
-  addUser,
-  getMyLists,
-  signIn,
-  signOut,
-  getUserDetails,
-}
-=======
 module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut, signUp1 };
->>>>>>> 47b244d25846c552041683f36a740e08044106dc
