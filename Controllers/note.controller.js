@@ -15,6 +15,7 @@ const UserModel = require('../Models/user.model')
 const addNote = async (req, res) => {
   try {
     req.body.Note.lastEdited = new Date()
+    req.body.Note.isPinned = false
     // console.log(req.body)
     const newNote = await NoteModel.create(req.body.Note)
     const userId = req.payload.id
@@ -43,8 +44,13 @@ const updateNote = async (req, res) => {
       title: req.body.title,
       content: req.body.content,
       lastEdited: edited ? new Date() : note.lastEdited,
+      isPinned: req.body.isPinned,
     })
-    return res.json({ message: 'Note updated successfully', statusCode: 0 })
+    return res.json({
+      message: 'Note updated successfully',
+      statusCode: 0,
+      edited,
+    })
   } catch (err) {
     // console.log(err)
     return res.json({ error: 'server error', statusCode: 1 })

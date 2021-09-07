@@ -82,10 +82,24 @@ const validateSignin = (req, res, next) => {
   return next()
 }
 
-const validateSignout = (req, res, next) => {}
+const validateUserDetails = (req, res, next) => {
+  const schema = joi.object({
+    id: joi.string().required().length(24),
+  })
+
+  const isValid = schema.validate(req.body)
+  if (isValid.error) {
+    return res.json({
+      statusCode: 1,
+      error: isValid.error.details[0].message,
+    })
+  }
+  return next()
+}
 
 module.exports = {
   validateSignup,
   validateSignup1,
   validateSignin,
+  validateUserDetails,
 }

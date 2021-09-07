@@ -9,11 +9,12 @@ const {
   signIn,
   getMyNotes,
   getMyLists,
+  getUserDetails,
 } = require("../Controllers/user.controller");
 const {
   validateSignin,
   validateSignup,
-  validateSignup1,
+  validateUserDetails,
 } = require("../Validation/user.validator");
 
 //router.post("/signup", addUser);
@@ -21,7 +22,7 @@ const {
 router.post("/getmynotes", getMyNotes);
 router.post("/getmylists", getMyLists);
 router.post("/signout", signOut);
-router.post("/signup1", validateSignup1, signUp1);
+router.post("/userdetails", validateUserDetails, getUserDetails);
 router.post("/signup", validateSignup, addUser);
 router.post("/signin", validateSignin, signIn);
 router.post("/Home", (req, res) => {

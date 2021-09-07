@@ -15,7 +15,7 @@ const getMyTodos = async (req, res) => {
       todos: list.todos,
     })
   } catch (err) {
-    return res.json({ err: 'Server Error', statusCode: 1 })
+    return res.json({ error: 'Server Error', statusCode: 1 })
   }
 }
 

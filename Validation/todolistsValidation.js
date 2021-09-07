@@ -20,7 +20,7 @@ const validateAddTodolist = (req, res, next) => {
 const validateUpdateTodolist = (req, res, next) => {
   const schema = Joi.object({
     Todolist: Joi.object({
-      id: Joi.string().required(),
+      id: Joi.string().required().length(24),
       title: Joi.string().required(),
     }),
   })
@@ -36,7 +36,7 @@ const validateUpdateTodolist = (req, res, next) => {
 }
 const validDeleteList = (req, res, next) => {
   const schema = Joi.object({
-    id: Joi.string().required(),
+    id: Joi.string().required().length(24),
   })
 
   const isValid = schema.validate(req.body)
