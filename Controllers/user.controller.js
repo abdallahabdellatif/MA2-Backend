@@ -255,6 +255,7 @@ module.exports = {
   getMyNotes,
   addUser,
   getMyLists,
+  signUp1,
   signIn,
   signOut,
   getUserDetails,

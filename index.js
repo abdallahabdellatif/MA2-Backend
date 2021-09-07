@@ -14,7 +14,7 @@ const jwt = require("jsonwebtoken");
 app.use(express.json());
 app.use(
   cors({
-    exposedHeaders: "*",
+    exposedHeaders: "auth",
   })
 );
 app.use("/users", usersRouter);
