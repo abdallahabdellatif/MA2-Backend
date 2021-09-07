@@ -193,7 +193,8 @@ const getUserDetails = async (req, res) => {
     return res.json({
       status: 0,
       message: "Signed out successfully",
-      
+      user
+
     });
   } catch (err) {
     return res.json({
