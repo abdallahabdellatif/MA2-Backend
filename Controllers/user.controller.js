@@ -40,7 +40,7 @@ const signUp1 = async (req, res) => {
     if (data) {
       return res.json({
         statusCode: 1,
-        message: 'Invalid Email,this email already exists',
+        error: 'Invalid Email,this email already exists',
       })
     } else {
       return res.json({
