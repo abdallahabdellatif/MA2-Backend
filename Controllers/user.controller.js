@@ -164,7 +164,29 @@ const getMyLists = async (req, res) => {
 const signOut = (req, res) => {
   const token = req.headers["auth"];
   try {
-    jwt.verify(token, process.env.SECRET);
+    jwt.verify(token, process.env.SECRET)
+    return res.json({
+      status: 0,
+      message: 'Signed out successfully',
+    })
+  } catch (err) {
+    return res.json({
+      status: 1,
+      error: 'Unauthorised User',
+    })
+  }
+}
+const getUserDetails = async (req, res) => {
+  const token = req.headers['auth']
+  try {
+    const payload = jwt.verify(token, process.env.SECRET)
+    const user = await UserModel.findById(payload.id)
+    if (!user) {
+      return res.json({
+        status: 1,
+        error: 'User Not Found',
+      })
+    }
     return res.json({
       status: 0,
       message: "Signed out successfully",
