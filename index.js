@@ -14,17 +14,16 @@ const jwt = require("jsonwebtoken");
 app.use(express.json());
 app.use(
   cors({
-    exposedHeaders: "auth",
+    exposedHeaders: "*",
   })
 );
 app.use("/users", usersRouter);
 app.use("/", (req, res, next) => {
   try {
     const token = req.headers["auth"];
-    console.log("req");
+    console.log("resssssq");
     const resp = jwt.verify(token, process.env.SECRET);
     req.payload = resp;
-    // console.log(resp);
     next();
   } catch (err) {
     //   next();

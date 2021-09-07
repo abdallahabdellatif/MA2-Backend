@@ -73,9 +73,12 @@ const signIn = async (req, res) => {
             email: data.email,
             password: data.password,
           },
-          process.env.SECRET
+          process.env.SECRET,
+          {
+            expiresIn: "5h",
+          }
         );
-        res.set("authTokennnnn", token);
+        res.set("auth", token);
         return res.json({
           statusCode: 0,
           message: "Signed in sucessfully",
@@ -139,7 +142,7 @@ const getMyNotes = async (req, res) => {
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
-    // console.log('abdooooooo',payload)
+    console.log('abdooooooo')
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
     try {
@@ -248,4 +251,11 @@ const getUserDetails = async (req, res) => {
 //   }
 // };
 
-module.exports = { getMyNotes, addUser, getMyLists, signIn, signOut, signUp1 };
+module.exports = {
+  getMyNotes,
+  addUser,
+  getMyLists,
+  signIn,
+  signOut,
+  getUserDetails,
+}
