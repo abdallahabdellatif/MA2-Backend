@@ -11,7 +11,6 @@ const todolistRouter = require("./Routers/todolistRouter");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-<<<<<<< HEAD
 app.use(express.json());
 app.use(
   cors({
@@ -20,16 +19,6 @@ app.use(
 );
 app.use("/users", usersRouter);
 app.use("/", (req, res, next) => {
-=======
-app.use(express.json())
-app.use(
-  cors({
-    exposedHeaders: 'auth',
-  })
-)
-app.use('/users', usersRouter)
-app.use('/', (req, res, next) => {
->>>>>>> 90af5f34c79648ab89efdfa569614851d631568c
   try {
     const token = req.headers["auth"];
     // console.log(req);
