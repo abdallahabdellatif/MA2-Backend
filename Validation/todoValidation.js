@@ -5,6 +5,7 @@ const validateAddTodo = (req, res, next) => {
     Todo: Joi.object({
       listId: Joi.string().required().length(24),
       content: Joi.string().required(),
+      isComplete: Joi.boolean().required(),
       priority: Joi.number().required().min(1).max(3),
     }).required(),
   })
@@ -25,6 +26,7 @@ const validateUpdateTodo = (req, res, next) => {
     Todo: Joi.object({
       id: Joi.string().required().length(24),
       content: Joi.string().required(),
+      isComplete: Joi.boolean().required(),
       priority: Joi.number().required(),
     }),
   })
