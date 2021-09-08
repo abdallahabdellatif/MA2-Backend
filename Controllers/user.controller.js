@@ -12,7 +12,7 @@ const addUser = async (req, res) => {
     if (data) {
       return res.json({
         statusCode: 1,
-        error: "Invalid Email,this email already exists",
+        message: "Invalid Email,this email already exists",
       });
     } else {
       const salt = await bcrypt.genSalt(10);
@@ -28,7 +28,7 @@ const addUser = async (req, res) => {
     console.log(exception);
     return res.json({
       statusCode: 1,
-      error: "Server Error",
+      message: "Server Error",
     });
   }
 };
@@ -52,7 +52,7 @@ const signUp1 = async (req, res) => {
     console.log(exception);
     return res.json({
       statusCode: 1,
-      error: "Server Error",
+      message: "Server Error",
     });
   }
 };
@@ -142,7 +142,7 @@ const getMyNotes = async (req, res) => {
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
-    console.log('abdooooooo')
+    console.log("abdooooooo");
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
     try {
@@ -167,34 +167,33 @@ const getMyLists = async (req, res) => {
 const signOut = (req, res) => {
   const token = req.headers["auth"];
   try {
-    jwt.verify(token, process.env.SECRET)
+    jwt.verify(token, process.env.SECRET);
     return res.json({
       status: 0,
-      message: 'Signed out successfully',
-    })
+      message: "Signed out successfully",
+    });
   } catch (err) {
     return res.json({
       status: 1,
-      error: 'Unauthorised User',
-    })
+      error: "Unauthorised User",
+    });
   }
-}
+};
 const getUserDetails = async (req, res) => {
-  const token = req.headers['auth']
+  const token = req.headers["auth"];
   try {
-    const payload = jwt.verify(token, process.env.SECRET)
-    const user = await UserModel.findById(payload.id)
+    const payload = jwt.verify(token, process.env.SECRET);
+    const user = await UserModel.findById(payload.id);
     if (!user) {
       return res.json({
         status: 1,
-        error: 'User Not Found',
-      })
+        error: "User Not Found",
+      });
     }
     return res.json({
       status: 0,
       message: "Signed out successfully",
-      user
-
+      user,
     });
   } catch (err) {
     return res.json({
@@ -261,4 +260,4 @@ module.exports = {
   signIn,
   signOut,
   getUserDetails,
-}
+};
