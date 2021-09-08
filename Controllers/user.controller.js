@@ -12,7 +12,7 @@ const addUser = async (req, res) => {
     if (data) {
       return res.json({
         statusCode: 1,
-        message: "Invalid Email,this email already exists",
+        error: "Invalid Email,this email already exists",
       });
     } else {
       const salt = await bcrypt.genSalt(10);
@@ -28,7 +28,7 @@ const addUser = async (req, res) => {
     console.log(exception);
     return res.json({
       statusCode: 1,
-      message: "Server Error",
+      error: "Server Error",
     });
   }
 };
@@ -40,7 +40,7 @@ const signUp1 = async (req, res) => {
     if (data) {
       return res.json({
         statusCode: 1,
-        message: "Invalid Email,this email already exists",
+        error: "Invalid Email,this email already exists",
       });
     } else {
       return res.json({
@@ -52,7 +52,7 @@ const signUp1 = async (req, res) => {
     console.log(exception);
     return res.json({
       statusCode: 1,
-      message: "Server Error",
+      error: "Server Error",
     });
   }
 };
