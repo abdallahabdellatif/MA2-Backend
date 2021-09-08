@@ -23,7 +23,11 @@ const addTodolist = async (req, res) => {
       const user = await UserModel.findById(userId)
       user.lists.push(newList.id)
       await user.save()
-      return res.json({ message: 'New list added successfully', statusCode: 0 })
+      return res.json({
+        message: 'New list added successfully',
+        statusCode: 0,
+        newList,
+      })
     } catch (err) {
       return res.json({ error: 'Server Error', statusCode: 1 })
     }

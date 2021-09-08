@@ -33,6 +33,7 @@ const addTodo = async (req, res) => {
     const newTodo = await TodoModel.create({
       content: req.body.Todo.content,
       priority: req.body.Todo.priority,
+      isComplete: req.body.Todo.isComplete,
     })
     // const newList = await TodolistModel.create(req.body.Todolist)
     // const userId = req.payload.id
@@ -54,6 +55,7 @@ const updateTodo = async (req, res) => {
     await TodoModel.findByIdAndUpdate(req.body.Todo.id, {
       content: req.body.Todo.content,
       priority: req.body.Todo.priority,
+      isComplete: req.body.Todo.isComplete,
     })
     return res.json({ message: 'Task updated successfully', statusCode: 0 })
   } catch (err) {
