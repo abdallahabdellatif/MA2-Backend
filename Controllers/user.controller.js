@@ -117,7 +117,7 @@ const getMyNotes = async (req, res) => {
     const userId = payload.id;
     try {
       const data = await UserModel.findById(userId).populate("Notes");
-      console.log(data.Notes);
+      // console.log(data.Notes);
       return res.json({
         message: "Notes successfully retrieved,now you can view your notes",
         statusCode: 0,
@@ -142,12 +142,21 @@ const getMyNotes = async (req, res) => {
 const getMyLists = async (req, res) => {
   try {
     // console.log(req.body)
-    console.log("abdooooooo");
+    // console.log("abdooooooo");
     const payload = jwt.verify(req.headers["auth"], process.env.SECRET);
     const userId = payload.id;
     try {
-      const data = await UserModel.findById(userId).populate("lists");
-      console.log(data);
+      const data = await UserModel.findById(userId).populate({
+        path: "lists",
+        populate: {
+          path: "todos",
+          // model: "Todo",
+        },
+      });
+
+      // .lists
+      // await data.lists.populate("todos");
+      console.log("hhhhhhhhhhh", data.lists);
       return res.json({
         message:
           "Your lists retrieved successfully,now you can view your lists",
@@ -155,11 +164,11 @@ const getMyLists = async (req, res) => {
         data: data.lists,
       });
     } catch (err) {
-      // console.log(err)
+      console.log(err);
       return res.json({ error: "Server Error", statusCode: 1 });
     }
   } catch (err) {
-    // console.log(err)
+    // console.log(err);
     return res.json({ error: "Unauthorised User", statusCode: 1 });
   }
 };
