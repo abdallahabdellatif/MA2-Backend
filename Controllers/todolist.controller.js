@@ -18,6 +18,7 @@ const addTodolist = async (req, res) => {
         statusCode: 1,
       })
     }
+    req.body.Todolist.lastEdited = new Date()
     const newList = await TodolistModel.create(req.body.Todolist)
     try {
       const user = await UserModel.findById(userId)

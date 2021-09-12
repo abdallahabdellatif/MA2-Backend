@@ -8,6 +8,7 @@ const todoListSchema = new mongoose.Schema({
       ref: 'Todo',
     },
   ],
+  lastEdited: Date,
 })
 
 module.exports = mongoose.model('TodoList', todoListSchema)
