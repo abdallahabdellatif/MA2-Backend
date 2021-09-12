@@ -1,43 +1,47 @@
-const mongoose = require('mongoose')
-const connectDB = require('./database')
-const cors = require('cors')
-const port = process.env.PORT || 8000
+const mongoose = require("mongoose");
+const connectDB = require("./database");
+const cors = require("cors");
+const port = process.env.PORT || 8000;
 
-const express = require('express')
-const app = express()
-const usersRouter = require('./Routers/usersRouter')
-const todoRouter = require('./Routers/todoRouter')
-const notesRouter = require('./Routers/notesRouter')
-const todolistRouter = require('./Routers/todolistRouter')
-require('dotenv').config()
-const jwt = require('jsonwebtoken')
+const express = require("express");
+const app = express();
+const usersRouter = require("./Routers/usersRouter");
+const todoRouter = require("./Routers/todoRouter");
+const notesRouter = require("./Routers/notesRouter");
+const todolistRouter = require("./Routers/todolistRouter");
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
-app.use(express.json())
+app.get("/test", (req, res) => {
+  res.send("Hello world");
+});
+
+app.use(express.json());
 app.use(
   cors({
-    exposedHeaders: 'auth',
+    exposedHeaders: "auth",
   })
-)
-app.use('/users', usersRouter)
-app.use('/', (req, res, next) => {
+);
+app.use("/users", usersRouter);
+app.use("/", (req, res, next) => {
   try {
-    const token = req.headers['auth']
-    console.log('resssssq')
-    const resp = jwt.verify(token, process.env.SECRET)
-    req.payload = resp
-    next()
+    const token = req.headers["auth"];
+    console.log("resssssq");
+    const resp = jwt.verify(token, process.env.SECRET);
+    req.payload = resp;
+    next();
   } catch (err) {
     //   next();
     return res.json({
       statusCode: 1,
-      error: 'Unauthorised',
-    })
+      error: "Unauthorised",
+    });
   }
-})
-app.use('/notes', notesRouter)
-app.use('/todo', todoRouter)
-app.use('/todolist', todolistRouter)
+});
+app.use("/notes", notesRouter);
+app.use("/todo", todoRouter);
+app.use("/todolist", todolistRouter);
 
-app.listen(port)
+app.listen(port);
 
-connectDB()
+connectDB();
